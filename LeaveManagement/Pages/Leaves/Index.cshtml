@@ -1,0 +1,31 @@
+@page
+@model LeaveManagement.Pages.Leaves.IndexModel
+
+<h3>My Leave Requests</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Attachment</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var l in Model.Leaves)
+    {
+        <tr>
+            <td>@l.StartDate.ToShortDateString()</td>
+            <td>@l.EndDate.ToShortDateString()</td>
+            <td>@l.Type</td>
+            <td><span class="badge @(l.Status==LeaveManagement.Models.LeaveStatus.Pending?"bg-warning":"bg-success")">@l.Status</span></td>
+            <td>
+                @if (!string.IsNullOrEmpty(l.AttachmentUrl)) { <a href="@l.AttachmentUrl">Download</a> }
+            </td>
+            <td><a class="btn btn-sm btn-outline-primary" href="/Leaves/Details?id=@l.Id">Details</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

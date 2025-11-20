@@ -1,0 +1,62 @@
+@page
+@model LeaveManagement.Pages.Leaves.DetailsModel
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h4 class="card-title">Leave Request</h4>
+                        <p class="text-muted">Submitted: @Model.Leave.CreatedAt.ToLocalTime().ToString("g")</p>
+                    </div>
+                    <div>
+                        <span class="badge @(Model.Leave.Status==LeaveManagement.Models.LeaveStatus.Pending?"bg-warning text-dark":(Model.Leave.Status==LeaveManagement.Models.LeaveStatus.Approved?"bg-success":"bg-danger"))">@Model.Leave.Status</span>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Period</h6>
+                        <p>@Model.Leave.StartDate.ToShortDateString() - @Model.Leave.EndDate.ToShortDateString()</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Type</h6>
+                        <p>@Model.Leave.Type</p>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <h6>Reason</h6>
+                    <p class="text-break">@Model.Leave.Reason</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6>Attachment</h6>
+                    @if (!string.IsNullOrEmpty(Model.Leave.AttachmentUrl))
+                    {
+                        <a class="btn btn-outline-primary" href="@Model.Leave.AttachmentUrl"><i class="bi bi-download me-1"></i>Download attachment</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No attachment</span>
+                    }
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-secondary me-2" href="/Leaves">Back</a>
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <form method="post" asp-page="/Manager/Index" asp-route-id="@Model.Leave.Id" asp-page-handler="Approve" class="d-inline">
+                            <button class="btn btn-success me-2">Approve</button>
+                        </form>
+                        <form method="post" asp-page="/Manager/Index" asp-route-id="@Model.Leave.Id" asp-page-handler="Reject" class="d-inline">
+                            <button class="btn btn-danger">Reject</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

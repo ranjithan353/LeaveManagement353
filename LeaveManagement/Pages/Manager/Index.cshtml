@@ -1,0 +1,132 @@
+@page
+@model LeaveManagement.Pages.Manager.IndexModel
+@using LeaveManagement.Models
+
+<!-- Manager Dashboard: Pending Approvals -->
+<div class="mb-4">
+    <div class="row align-items-center">
+        <div class="col">
+            <h1 class="h3 mb-1 fw-bold">
+                <i class="bi bi-clipboard-check me-2"></i>Pending Leave Approvals
+            </h1>
+            <p class="text-muted mb-0">Review and action pending leave requests from your team</p>
+        </div>
+        <div class="col-auto">
+            <span class="badge bg-warning text-dark fs-5">@Model.Pending.Count() requests</span>
+        </div>
+    </div>
+</div>
+
+@if (Model.Pending.Any())
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="fw-semibold">Employee Name</th>
+                            <th class="fw-semibold">Leave Type</th>
+                            <th class="fw-semibold">Start Date</th>
+                            <th class="fw-semibold">End Date</th>
+                            <th class="fw-semibold">Duration</th>
+                            <th class="fw-semibold">Reason</th>
+                            <th class="fw-semibold">Requested On</th>
+                            <th class="text-end fw-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var l in Model.Pending)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="fw-semibold">@l.UserId</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">@l.Type</span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">@l.StartDate.ToShortDateString()</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted">@l.EndDate.ToShortDateString()</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted">@((l.EndDate - l.StartDate).Days + 1) day(s)</small>
+                                </td>
+                                <td>
+                                    <small>@(string.IsNullOrEmpty(l.Reason) ? "—" : l.Reason)</small>
+                                </td>
+                                <td>
+                                    <small class="text-muted">@l.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/Leaves/Details?id=@l.Id" class="btn btn-outline-secondary" title="View full details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <form method="post" asp-page-handler="Approve" class="d-inline" onsubmit="return confirm('Approve this leave request?');">
+                                            <input type="hidden" name="id" value="@l.Id" />
+                                            <button type="submit" class="btn btn-outline-success" title="Approve request">
+                                                <i class="bi bi-check-circle"></i>
+                                            </button>
+                                        </form>
+                                        <form method="post" asp-page-handler="Reject" class="d-inline" onsubmit="return confirm('Reject this leave request?');">
+                                            <input type="hidden" name="id" value="@l.Id" />
+                                            <button type="submit" class="btn btn-outline-danger" title="Reject request">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Helper Information -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-info-circle me-3 mt-1"></i>
+                    <div>
+                        <strong>Approval Tips:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Click <i class="bi bi-eye"></i> to view the complete request details including any attachments</li>
+                            <li>Click <i class="bi bi-check-circle"></i> to approve the leave request</li>
+                            <li>Click <i class="bi bi-x-circle"></i> to reject the leave request</li>
+                            <li>Confirmation prompts will appear before any action is taken</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Empty State -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="text-center py-5">
+                <i class="bi bi-check-circle-fill fs-1 text-success mb-3 d-block"></i>
+                <h5 class="fw-bold mb-2">All Caught Up!</h5>
+                <p class="text-muted mb-0">There are no pending leave requests at this time. All requests have been reviewed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="/Dashboard" class="btn btn-primary">
+                <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+}

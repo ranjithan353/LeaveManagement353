@@ -1,0 +1,73 @@
+@page
+@model LeaveManagement.Pages.Profile.IndexModel
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">My Profile</h4>
+                <div class="d-flex mb-3">
+                    <div class="me-3">
+                        @if (ViewData["AvatarUrl"] != null)
+                        {
+                            <img src="@ViewData["AvatarUrl"]" class="rounded-circle" style="width:96px;height:96px;object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="bg-secondary rounded-circle text-white d-flex align-items-center justify-content-center" style="width:96px;height:96px;">A</div>
+                        }
+                    </div>
+                    <div class="flex-fill">
+                        <form method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full name</label>
+                                    <input asp-for="Profile.FullName" class="form-control" />
+                                    <span asp-validation-for="Profile.FullName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input asp-for="Profile.Email" class="form-control" />
+                                    <span asp-validation-for="Profile.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                <input asp-for="Profile.Address" class="form-control" />
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Department</label>
+                                    <input asp-for="Profile.Department" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Phone</label>
+                                    <input asp-for="Profile.Phone" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Role</label>
+                                    <input asp-for="Profile.Role" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Hire date</label>
+                                <input asp-for="Profile.HireDate" class="form-control" type="date" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Avatar (png/jpg)</label>
+                                <input type="file" asp-for="Upload" class="form-control" />
+                            </div>
+                            <button class="btn btn-primary">Save Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

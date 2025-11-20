@@ -1,0 +1,58 @@
+@page
+@model LeaveManagement.Pages.IndexModel
+
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h1 class="display-5 fw-bold">Welcome to Leave Management</h1>
+                <p class="lead text-muted">Easily submit leave requests, upload attachments, and let managers approve or reject — built with .NET Razor Pages for simplicity.</p>
+                <p>
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a class="btn btn-primary btn-lg me-2" href="/Dashboard">Go to Dashboard</a>
+                        <a class="btn btn-outline-secondary btn-lg" href="/Leaves/Create">Create Leave</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary btn-lg me-2" href="/Account/Login">Sign in</a>
+                        <a class="btn btn-outline-secondary btn-lg" href="/Account/Login">Get Started</a>
+                    }
+                </p>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="https://cdn.jsdelivr.net/gh/twbs/icons@1.10.5/font/bootstrap-icons.svg" alt="" style="max-width:250px;"/>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">My Leaves</h5>
+                        <p class="card-text text-muted">View your leave history and status.</p>
+                        <a class="stretched-link" href="/Leaves">Open</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Leave</h5>
+                        <p class="card-text text-muted">Submit a new leave request with optional attachment.</p>
+                        <a class="stretched-link" href="/Leaves/Create">Open</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Manager Dashboard</h5>
+                        <p class="card-text text-muted">Managers can approve or reject pending requests.</p>
+                        <a class="stretched-link" href="/Manager">Open</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

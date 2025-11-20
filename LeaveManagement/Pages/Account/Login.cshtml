@@ -1,0 +1,45 @@
+@page
+@model LeaveManagement.Pages.Account.LoginModel
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Sign in to LeaveMgmt</h4>
+
+                @if (Env.IsProduction())
+                {
+                    <p class="text-center text-muted mb-3">Use your Microsoft account to sign in</p>
+                    <!-- Link to this page will trigger OnGet -> Challenge -> Azure AD -->
+                    <a class="btn btn-primary w-100" asp-page="/Account/Login">Sign in with Microsoft</a>
+                }
+                else
+                {
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input class="form-control" asp-for="Username" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" asp-for="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <button class="btn btn-primary w-100">Sign in</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @if (!Env.IsProduction())
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,520 @@
+@page
+@model LeaveManagement.Pages.Dashboard.IndexModel
+
+<!-- Employee Dashboard View -->
+@if (Model.IsEmployee)
+{
+    <!-- Welcome Header -->
+    <div class="mb-4">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                @if (ViewData["AvatarUrl"] != null)
+                {
+                    <img src="@ViewData["AvatarUrl"]" class="rounded-circle shadow-sm" style="width:80px;height:80px;object-fit:cover;" alt="Profile Avatar" />
+                }
+                else
+                {
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:80px;height:80px;font-size:32px;font-weight:bold;">
+                        @User.Identity?.Name?[0]
+                    </div>
+                }
+            </div>
+            <div class="col">
+                <h1 class="h3 mb-1 fw-bold">Welcome back, @User.Identity?.Name</h1>
+                <p class="text-muted mb-0">Here's your leave request summary</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Summary Stats Cards -->
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Total Requests</p>
+                        <h3 class="mb-0 fw-bold text-primary">@Model.TotalLeaves</h3>
+                    </div>
+                    <div class="fs-2 text-primary opacity-10">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Approved</p>
+                        <h3 class="mb-0 fw-bold text-success">@Model.Approved</h3>
+                    </div>
+                    <div class="fs-2 text-success opacity-10">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Pending Review</p>
+                        <h3 class="mb-0 fw-bold text-warning">@Model.Pending</h3>
+                    </div>
+                    <div class="fs-2 text-warning opacity-10">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Rejected</p>
+                        <h3 class="mb-0 fw-bold text-danger">@Model.Rejected</h3>
+                    </div>
+                    <div class="fs-2 text-danger opacity-10">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Progress -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="card-title mb-0">Approval Rate</h6>
+                        <span class="text-muted small">
+                            @if (Model.TotalLeaves > 0)
+                            {
+                                <text>@(Model.Approved * 100 / Model.TotalLeaves)%</text>
+                            }
+                            else
+                            {
+                                <text>0%</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="progress" style="height:8px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:@(Model.TotalLeaves==0?0: (Model.Approved*100/Model.TotalLeaves))%" aria-valuenow="@Model.Approved" aria-valuemin="0" aria-valuemax="@Model.TotalLeaves"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="/Leaves/Create" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle me-2"></i>Submit New Leave Request
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Requests Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold">My Leave Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Recent.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="fw-semibold">Type</th>
+                                        <th class="fw-semibold">Duration</th>
+                                        <th class="fw-semibold">Requested On</th>
+                                        <th class="fw-semibold">Status</th>
+                                        <th class="text-end fw-semibold">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var r in Model.Recent)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="fw-semibold">@r.Type</span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">@r.StartDate.ToShortDateString() – @r.EndDate.ToShortDateString()</small>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">@r.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(r.Status==LeaveManagement.Models.LeaveStatus.Pending?"bg-warning text-dark":(r.Status==LeaveManagement.Models.LeaveStatus.Approved?"bg-success":"bg-danger"))">
+                                                    @if (r.Status == LeaveManagement.Models.LeaveStatus.Pending)
+                                                    {
+                                                        <i class="bi bi-hourglass-split me-1"></i>
+                                                    }
+                                                    else if (r.Status == LeaveManagement.Models.LeaveStatus.Approved)
+                                                    {
+                                                        <i class="bi bi-check-circle me-1"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-x-circle me-1"></i>
+                                                    }
+                                                    @r.Status
+                                                </span>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="/Leaves/Details?id=@r.Id" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye me-1"></i>View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                            <p class="text-muted">No leave requests yet. Start by <a href="/Leaves/Create" class="text-decoration-none">submitting a new request</a>.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Manager Dashboard View -->
+@if (Model.IsManager)
+{
+    <!-- Welcome Header -->
+    <div class="mb-4">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                @if (ViewData["AvatarUrl"] != null)
+                {
+                    <img src="@ViewData["AvatarUrl"]" class="rounded-circle shadow-sm" style="width:80px;height:80px;object-fit:cover;" alt="Profile Avatar" />
+                }
+                else
+                {
+                    <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:80px;height:80px;font-size:32px;font-weight:bold;">
+                        @User.Identity?.Name?[0]
+                    </div>
+                }
+            </div>
+            <div class="col">
+                <h1 class="h3 mb-1 fw-bold">Manager Dashboard</h1>
+                <p class="text-muted mb-0">Review and approve pending leave requests from your team</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Stats Cards -->
+    <div class="row">
+        <div class="col-md-4 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Pending Approval</p>
+                        <h3 class="mb-0 fw-bold text-warning">@Model.Pending</h3>
+                    </div>
+                    <div class="fs-2 text-warning opacity-10">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Approved</p>
+                        <h3 class="mb-0 fw-bold text-success">@Model.Approved</h3>
+                    </div>
+                    <div class="fs-2 text-success opacity-10">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Rejected</p>
+                        <h3 class="mb-0 fw-bold text-danger">@Model.Rejected</h3>
+                    </div>
+                    <div class="fs-2 text-danger opacity-10">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Table -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">Pending Requests</h5>
+                    <span class="badge bg-warning text-dark fs-6">@Model.Pending</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Recent.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="fw-semibold">Employee</th>
+                                        <th class="fw-semibold">Leave Type</th>
+                                        <th class="fw-semibold">Duration</th>
+                                        <th class="fw-semibold">Reason</th>
+                                        <th class="fw-semibold">Requested On</th>
+                                        <th class="text-end fw-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var r in Model.Recent)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="fw-semibold">@r.UserId</span>
+                                            </td>
+                                            <td>@r.Type</td>
+                                            <td>
+                                                <small class="text-muted">@r.StartDate.ToShortDateString() – @r.EndDate.ToShortDateString()</small>
+                                            </td>
+                                            <td>
+                                                <small>@(string.IsNullOrEmpty(r.Reason) ? "No reason provided" : r.Reason)</small>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">@r.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="/Leaves/Details?id=@r.Id" class="btn btn-sm btn-outline-secondary me-2">
+                                                    <i class="bi bi-eye me-1"></i>View Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-check-circle-fill fs-1 text-success mb-3 d-block"></i>
+                            <p class="text-muted mb-0">All leave requests have been reviewed. Great work!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Note -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Tip:</strong> Click "View Details" to review the full request before approving or rejecting.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Admin Dashboard View -->
+@if (Model.IsAdmin)
+{
+    <!-- Welcome Header -->
+    <div class="mb-4">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                @if (ViewData["AvatarUrl"] != null)
+                {
+                    <img src="@ViewData["AvatarUrl"]" class="rounded-circle shadow-sm" style="width:80px;height:80px;object-fit:cover;" alt="Profile Avatar" />
+                }
+                else
+                {
+                    <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:80px;height:80px;font-size:32px;font-weight:bold;">
+                        @User.Identity?.Name?[0]
+                    </div>
+                }
+            </div>
+            <div class="col">
+                <h1 class="h3 mb-1 fw-bold">Administration Dashboard</h1>
+                <p class="text-muted mb-0">System overview and organization-wide leave management</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Stats Cards -->
+    <div class="row">
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Total Users</p>
+                        <h3 class="mb-0 fw-bold text-primary">@Model.TotalUsers</h3>
+                    </div>
+                    <div class="fs-2 text-primary opacity-10">
+                        <i class="bi bi-people"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Managers</p>
+                        <h3 class="mb-0 fw-bold text-info">@Model.ManagersCount</h3>
+                    </div>
+                    <div class="fs-2 text-info opacity-10">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Employees</p>
+                        <h3 class="mb-0 fw-bold text-success">@Model.EmployeesCount</h3>
+                    </div>
+                    <div class="fs-2 text-success opacity-10">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-muted small mb-1">Total Requests</p>
+                        <h3 class="mb-0 fw-bold text-purple">@(Model.Pending + Model.Approved + Model.Rejected)</h3>
+                    </div>
+                    <div class="fs-2 text-purple opacity-10">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Status Overview -->
+    <div class="row mt-3">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title text-muted mb-3">Pending Approval</h6>
+                    <h2 class="mb-0 fw-bold text-warning">@Model.Pending</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title text-muted mb-3">Approved</h6>
+                    <h2 class="mb-0 fw-bold text-success">@Model.Approved</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title text-muted mb-3">Rejected</h6>
+                    <h2 class="mb-0 fw-bold text-danger">@Model.Rejected</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Requests Table -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold">Recent Leave Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Recent.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="fw-semibold">Employee</th>
+                                        <th class="fw-semibold">Leave Type</th>
+                                        <th class="fw-semibold">Duration</th>
+                                        <th class="fw-semibold">Submitted</th>
+                                        <th class="fw-semibold">Status</th>
+                                        <th class="text-end fw-semibold">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var r in Model.Recent)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="fw-semibold">@r.UserId</span>
+                                            </td>
+                                            <td>@r.Type</td>
+                                            <td>
+                                                <small class="text-muted">@r.StartDate.ToShortDateString() – @r.EndDate.ToShortDateString()</small>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">@r.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(r.Status==LeaveManagement.Models.LeaveStatus.Pending?"bg-warning text-dark":(r.Status==LeaveManagement.Models.LeaveStatus.Approved?"bg-success":"bg-danger"))">
+                                                    @r.Status
+                                                </span>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="/Leaves/Details?id=@r.Id" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye me-1"></i>View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                            <p class="text-muted">No leave requests available.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

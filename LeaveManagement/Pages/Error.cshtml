@@ -1,0 +1,30 @@
+@page
+@model LeaveManagement.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card border-danger shadow-sm">
+            <div class="card-body text-center">
+                <h2 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> An error occurred</h2>
+                <p class="lead">We're sorry, but something went wrong.</p>
+                
+                @if (Model.ShowRequestId)
+                {
+                    <p class="text-muted">
+                        <small>Request ID: <code>@Model.RequestId</code></small>
+                    </p>
+                }
+                
+                <p>If this problem persists, please contact your administrator.</p>
+                <div class="mt-4">
+                    <a class="btn btn-primary" href="/Dashboard">Go to Dashboard</a>
+                    <a class="btn btn-outline-secondary" href="javascript:history.back()">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,13 @@
+/bin/
+/obj/
+*.db
+*.sqlite
+*.user
+.vs/
+.nuget/
+.env
+.env.*
+*.vspscc
+*.vssscc
+Data/leave.db
+Data/Uploads/

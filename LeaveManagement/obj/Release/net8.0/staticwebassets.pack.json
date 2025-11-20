@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\uploads\\.gitkeep",
+      "PackagePath": "staticwebassets\\uploads\\.gitkeep"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.LeaveManagement.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.LeaveManagement.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.LeaveManagement.props",
+      "PackagePath": "build\\LeaveManagement.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.LeaveManagement.props",
+      "PackagePath": "buildMultiTargeting\\LeaveManagement.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.LeaveManagement.props",
+      "PackagePath": "buildTransitive\\LeaveManagement.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

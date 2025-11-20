@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "6IGp5X0VLO645oP+oBOsLCEv98i/99wQMLX4edFRzmI=",
+  "Source": "LeaveManagement",
+  "BasePath": "_content/LeaveManagement",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LeaveManagement\\wwwroot",
+      "Source": "LeaveManagement",
+      "ContentRoot": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\",
+      "BasePath": "_content/LeaveManagement",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\uploads\\.gitkeep",
+      "SourceId": "LeaveManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\",
+      "BasePath": "_content/LeaveManagement",
+      "RelativePath": "uploads/#[.{fingerprint}]?.gitkeep",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5ipweew5fc",
+      "Integrity": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\.gitkeep"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "uploads/.5ipweew5fc.gitkeep",
+      "AssetFile": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\uploads\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "0"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 15 Nov 2025 07:20:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5ipweew5fc"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/.gitkeep"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/.gitkeep",
+      "AssetFile": "C:\\Users\\Rohith R\\Pictures\\AnyDesk\\Leavemanagement353\\LeaveManagement\\wwwroot\\uploads\\.gitkeep",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "0"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 15 Nov 2025 07:20:51 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+        }
+      ]
+    }
+  ]
+}
